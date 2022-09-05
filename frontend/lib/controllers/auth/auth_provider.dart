@@ -34,7 +34,6 @@ class AuthProvider extends ChangeNotifier {
           if (result.statusCode == 201) {
             LoginResponseModel loginResponse =
                 loginResponseModelFromJson(result.body);
-            print('toekn: ${loginResponse.token}');
             await LocalData.saveUserType(UserType.admin.name);
             LocalData.saveAdminToken(loginResponse.token).whenComplete(() {
               emailController.clear();

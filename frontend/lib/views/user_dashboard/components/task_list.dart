@@ -54,8 +54,6 @@ class _TaskListState extends State<TaskList> {
                       itemCount: userProvider.taskListResponse!.results.length,
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        print(
-                            'length: ${userProvider.taskListResponse!.results[index].task}');
                         String task =
                             userProvider.taskListResponse!.results[index].task;
                         // return Text(task,

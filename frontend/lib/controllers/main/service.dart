@@ -11,7 +11,6 @@ class APIService {
 
   static Future<http.Response> getUsersDataEnd() async {
     String? tokenAdmin = await LocalData.retrieveAdminToken();
-    print('tokennn: $tokenAdmin');
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $tokenAdmin'
@@ -19,7 +18,6 @@ class APIService {
 
     Uri url = Uri.http(Config.hostURL, Config.basePathURL + Config.getUserPath);
     var response = await client.get(url, headers: requestHeaders);
-    print('response:drd ${response.body}');
     return response;
   }
 
