@@ -20,25 +20,32 @@ This application demonstrates an employee management system for a food delivery 
 
 # Configure .env file for your project(server) 
 
-- ACCESS_TOKEN_SECRET = ****
-- REFRESH_TOKEN_SECRET = ****
+```
+ACCESS_TOKEN_SECRET = ****
+REFRESH_TOKEN_SECRET = ****
 
-- TWILIO_ACCOUNT_SID = ****
-- TWILIO_AUTH_TOKEN = ****
+TWILIO_ACCOUNT_SID = ****
+TWILIO_AUTH_TOKEN = ****
 
-- TWILIO_SERVICE_SID = ****
+TWILIO_SERVICE_SID = ****
+
+```
 
 
 # Configure .env file for your project(frontend) 
 
-- EMS_ADMIN_BOX = ****
-- ENCRIPTION_ADMINKEY_STORAGE = ****
 
-- EMS_USER_BOX = ****
-- ENCRIPTION_USERKEY_STORAGE = ****
+```
+EMS_ADMIN_BOX = ****
+ENCRIPTION_ADMINKEY_STORAGE = ****
 
-- EMS_USER_TYPE_BOX = ****
-- EMS_USER_ROLE_ID = ****
+EMS_USER_BOX = ****
+ENCRIPTION_USERKEY_STORAGE = ****
+
+EMS_USER_TYPE_BOX = ****
+EMS_USER_ROLE_ID = ****
+
+```
 
 ## Installing and start the server
 
