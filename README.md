@@ -47,7 +47,7 @@ EMS_USER_ROLE_ID = ****
 
 ## Installing and start the server
 
-- move to backend directory : <cd backend>
+- move to backend directory :- (cd backend)
 
 - If node is not installed then Install [node] (https://nodejs.org/en/download/)
 - Run the following command to load all the module dependencies for this app:
@@ -64,13 +64,14 @@ Open [http://localhost:<yourEnvPort>](http://localhost:<yourEnvPort>) to view it
 
 ## Installing and start the frontend(Ui)
 
-- move to frontend directory : <cd frontend>
+- move to frontend directory :- (cd frontend)
 
   ### `flutter pub get`
 
 - to start and run the flutter project
 
   ### `flutter run`
+
 
 
 
