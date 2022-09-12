@@ -3,18 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:employee_managment/common/theme.dart';
 
 class MainTextField extends StatelessWidget {
-  const MainTextField({
-    Key? key,
-    required this.hintText,
-    this.icon,
-    this.textEditingController,
-    this.validatorText,
-    this.invalidText,
-    required this.prefixIconExist,
-    this.sizedBox = 32,
-    this.minLines = 1,
-    this.maxLines = 1,
-  }) : super(key: key);
+  const MainTextField(
+      {Key? key,
+      required this.hintText,
+      this.icon,
+      this.textEditingController,
+      this.validatorText,
+      this.invalidText,
+      required this.prefixIconExist,
+      this.sizedBox = 32,
+      this.minLines = 1,
+      this.maxLines = 1,
+      this.obscureText = false,
+      })
+      : super(key: key);
 
   final String hintText;
   final IconData? icon;
@@ -25,6 +27,7 @@ class MainTextField extends StatelessWidget {
   final double? sizedBox;
   final int? minLines;
   final int? maxLines;
+  final bool? obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +37,7 @@ class MainTextField extends StatelessWidget {
           height: sizedBox,
         ),
         TextFormField(
+          obscureText: obscureText!,
           autofocus: false,
           controller: textEditingController,
           validator: (val) => val!.isEmpty

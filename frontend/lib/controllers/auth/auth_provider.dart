@@ -2,6 +2,7 @@ import 'package:employee_managment/common/user_type_enum.dart';
 import 'package:employee_managment/component/main_snack_bar_sucess.dart';
 import 'package:employee_managment/controllers/auth/local/local_persist_data.dart';
 import 'package:employee_managment/controllers/auth/service.dart';
+import 'package:employee_managment/models/auth/response_model/admin_login_response_model.dart';
 import 'package:employee_managment/models/auth/response_model/login_response_model.dart';
 import 'package:employee_managment/models/auth/request_model/admin_login_request_model.dart';
 import 'package:employee_managment/models/auth/request_model/user_login_request_model.dart';
@@ -21,6 +22,8 @@ class AuthProvider extends ChangeNotifier {
   TextEditingController phoneController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
+  UserLoginResponseModel? loginResponse;
+
   void adminLogin(BuildContext context) {
     if (authAdminFormKey.currentState!.validate()) {
       Future.delayed(const Duration(seconds: 1), () {
@@ -32,8 +35,9 @@ class AuthProvider extends ChangeNotifier {
         );
         APIService.loginAdminEnd(model).then((result) async {
           if (result.statusCode == 201) {
-            LoginResponseModel loginResponse =
-                loginResponseModelFromJson(result.body);
+            print('result: ${result.body}');
+            AdminLoginResponseModel loginResponse =
+                adminLoginResponseModelFromJson(result.body);
             await LocalData.saveUserType(UserType.admin.name);
             LocalData.saveAdminToken(loginResponse.token).whenComplete(() {
               emailController.clear();
@@ -65,21 +69,16 @@ class AuthProvider extends ChangeNotifier {
         if (result.statusCode == 201) {
           APIService.sendOTPEnd(model).then((result) async {
             if (result.statusCode == 201) {
-              LoginResponseModel loginResponse =
-                  loginResponseModelFromJson(result.body);
-              await LocalData.saveUserType(UserType.user.name);
-              LocalData.saveUserToken(loginResponse.token).whenComplete(() {
-                phoneController.clear();
-                loading = false;
-                notifyListeners();
-                Scaffold.of(context)
-                    // ignore: deprecated_member_use
-                    .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
-                        context, "Code has been sent your phone number")))
-                    .closed
-                    .whenComplete(
-                        () => {Navigator.pushNamed(context, RoutesName.otp)});
-              });
+              print('response: ${result.body}');
+              loading = false;
+              notifyListeners();
+              Scaffold.of(context)
+                  // ignore: deprecated_member_use
+                  .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
+                      context, "Code has been sent your phone number")))
+                  .closed
+                  .whenComplete(
+                      () => {Navigator.pushNamed(context, RoutesName.otp)});
             } else {
               loading = false;
               notifyListeners();
@@ -112,18 +111,28 @@ class AuthProvider extends ChangeNotifier {
 
       UserVerifyOTPRequestModel model = UserVerifyOTPRequestModel(
           phoneNumber: phoneController.text, otpCode: otpController.text);
-      APIService.verifyOTPEnd(model).then((result) {
+      APIService.verifyOTPEnd(model).then((result) async {
+        print('hehehr: ${result.body}');
         loading = false;
         notifyListeners();
         if (result.statusCode == 201) {
-          otpController.clear();
-          Scaffold.of(context)
-              // ignore: deprecated_member_use
-              .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
-                  context, "Successfuly logged in")))
-              .closed
-              .whenComplete(() =>
-                  {Navigator.pushNamed(context, RoutesName.dashboarduser)});
+          loginResponse = userLoginResponseModelFromJson(result.body);
+          await LocalData.saveUserType(UserType.user.name);
+          LocalData.saveUserToken(loginResponse!.token).whenComplete(() {
+            LocalData.saveUserRoleId(loginResponse!.users[0].roleId)
+                .whenComplete(() {
+              print('code2: ${loginResponse!.users[0].roleId}');
+              phoneController.clear();
+              otpController.clear();
+              Scaffold.of(context)
+                  // ignore: deprecated_member_use
+                  .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
+                      context, "Successfuly logged in")))
+                  .closed
+                  .whenComplete(() =>
+                      {Navigator.pushNamed(context, RoutesName.dashboarduser)});
+            });
+          });
         } else if (result.statusCode == 400) {
           // ignore: deprecated_member_use
           Scaffold.of(context).showSnackBar(

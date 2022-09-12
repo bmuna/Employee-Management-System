@@ -1,13 +1,13 @@
 import 'dart:convert';
 
-UserLoginResponseModel userLoginResponseModelFromJson(String str) =>
-    UserLoginResponseModel.fromJson(json.decode(str));
+AdminLoginResponseModel adminLoginResponseModelFromJson(String str) =>
+    AdminLoginResponseModel.fromJson(json.decode(str));
 
-String userLoginResponseModelToJson(UserLoginResponseModel data) =>
+String adminLoginResponseModelToJson(AdminLoginResponseModel data) =>
     json.encode(data.toJson());
 
-class UserLoginResponseModel {
-  UserLoginResponseModel({
+class AdminLoginResponseModel {
+  AdminLoginResponseModel({
     required this.code,
     required this.message,
     required this.token,
@@ -19,8 +19,8 @@ class UserLoginResponseModel {
   String token;
   List<User> users;
 
-  factory UserLoginResponseModel.fromJson(Map<String, dynamic> json) =>
-      UserLoginResponseModel(
+  factory AdminLoginResponseModel.fromJson(Map<String, dynamic> json) =>
+      AdminLoginResponseModel(
         code: json["code"],
         message: json["message"],
         token: json["token"],
@@ -49,11 +49,11 @@ class User {
   });
 
   int id;
-  int roleId;
-  String fullName;
+  dynamic roleId;
+  dynamic fullName;
   String email;
-  dynamic password;
-  String phoneNumber;
+  String password;
+  dynamic phoneNumber;
   String userType;
   DateTime createdAt;
   DateTime updatedAt;

@@ -37,6 +37,7 @@ class _AdminLoginState extends State<AdminLogin> {
                         invalidText: "Invalid email",
                       ),
                       MainTextField(
+                        obscureText: true,
                         hintText: 'Password',
                         prefixIconExist: true,
                         icon: Icons.lock,

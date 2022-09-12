@@ -15,6 +15,7 @@ const verifyAuth = (userType: string ) => {
 
     let token = req.headers.authorization?.split(' ')[1];
 	
+	
     if (token) {
         jwt.verify(token, config.server.tokensecret!, (error, decoded) => {
             if (error) {

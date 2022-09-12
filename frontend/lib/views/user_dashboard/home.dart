@@ -1,3 +1,4 @@
+import 'package:employee_managment/controllers/main/user_provider.dart';
 import 'package:employee_managment/views/user_dashboard/components/restaurant_order_list.dart';
 import 'package:employee_managment/views/user_dashboard/components/task_list.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,18 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    getHomeData();
+  }
+
+  Future<void> getHomeData() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.taskList();
+    await userProvider.restaurantOrderList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(

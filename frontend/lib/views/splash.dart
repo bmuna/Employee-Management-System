@@ -21,6 +21,8 @@ class _SplashState extends State<Splash> {
       var adminToken = await LocalData.retrieveAdminToken();
       var userToken = await LocalData.retrieveUserToken();
 
+      print('ttty: ${userType}, ${adminToken}, {userToken}');
+
       if (userType == UserType.admin.name) {
         if (adminToken != null) {
           if (!mounted) return;

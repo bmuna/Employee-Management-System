@@ -21,8 +21,14 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   @override
   void initState() {
+    homeData();
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).adminData();
+  }
+
+  Future<void> homeData() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    await userProvider.adminData();
+    await userProvider.userWithRole();
   }
 
   @override

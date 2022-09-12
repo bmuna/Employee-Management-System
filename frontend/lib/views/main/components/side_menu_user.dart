@@ -1,8 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:employee_managment/controllers/auth/auth_provider.dart';
 import 'package:employee_managment/controllers/auth/local/local_persist_data.dart';
+import 'package:employee_managment/controllers/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:employee_managment/common/theme.dart';
 import 'package:employee_managment/views/auth/login.dart';
+import 'package:provider/provider.dart';
 
 class SideMenuUser extends StatefulWidget {
   final TabController? tabController;
@@ -19,6 +22,10 @@ class SideMenuUser extends StatefulWidget {
 class _SideMenuUserState extends State<SideMenuUser> {
   @override
   Widget build(BuildContext context) {
+    // var authProvider = Provider.of<AuthProvider>(context, listen: false);
+    // String email = authProvider.loginResponse!.users[0].email;
+    // String fullName = MainUtils.convertToTitleCase(
+    //     authProvider.loginResponse!.users[0].fullName);
     return Drawer(
       elevation: 40,
       backgroundColor: kPrimaryLightColor,

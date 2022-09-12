@@ -1,7 +1,9 @@
 import 'package:employee_managment/component/main_snack_bar_sucess.dart';
+import 'package:employee_managment/controllers/auth/local/local_persist_data.dart';
 import 'package:employee_managment/controllers/main/service.dart';
 import 'package:employee_managment/models/users/request_model/employee_add_request_model.dart';
-import 'package:employee_managment/models/users/list_of_role_mode.dart';
+import 'package:employee_managment/models/users/list_of_role_mode.dart'
+    as listofRole;
 import 'package:employee_managment/models/users/response_model/restaurant_order_response_model.dart';
 import 'package:employee_managment/models/users/request_model/role_request_model.dart';
 import 'package:employee_managment/models/users/response_model/task_list_response_model.dart';
@@ -13,6 +15,14 @@ import 'package:http/http.dart';
 
 class UserProvider extends ChangeNotifier {
   bool loading = false;
+  bool loadingEmployeeData = true;
+  bool loadingEmployeeRole = true;
+  bool loadingRole = true;
+  bool loadingtask = true;
+  bool loadingTaskList = true;
+  bool loadingRetrauntLit = true;
+  listofRole.Result? dropdownResult;
+
   bool buttonLoading = false;
   int? roleId;
   dynamic dropdownValue;
@@ -22,6 +32,8 @@ class UserProvider extends ChangeNotifier {
   final employeeFormKey = GlobalKey<FormState>();
   final taskFormKey = GlobalKey<FormState>();
   final roleFormKey = GlobalKey<FormState>();
+  final dropDownEmployee = GlobalKey<FormFieldState>();
+  final dropDownTask = GlobalKey<FormFieldState>();
 
   List<TextEditingController> taskControllers = [];
   TextEditingController fullNameController = TextEditingController();
@@ -31,50 +43,47 @@ class UserProvider extends ChangeNotifier {
 
   UsersResponseModel? userResponse;
   UsersWithRoleModel? userWithRoleRes;
-  ListOfRolesModel? listOfRoleRes;
+  listofRole.ListOfRolesModel? listOfRoleRes;
   TaskListResponseModel? taskListResponse;
   RestaurantOrderResponseModel? restaurantOrderResponse;
 
   Future<void> adminData() async {
-    loading = true;
     Response response = await APIService.getUsersDataEnd();
     if (response.statusCode == 201) {
       userResponse = usersResponseModelFromJson(response.body);
     } else {
       print('error');
     }
-    loading = false;
+    loadingEmployeeData = false;
     notifyListeners();
   }
 
   Future<void> userWithRole() async {
-    loading = true;
     Response response = await APIService.getUsersWithRoleEnd();
     if (response.statusCode == 201) {
       userWithRoleRes = usersWithRoleModelFromJson(response.body);
     } else {
       print('error');
     }
-    loading = false;
+    loadingEmployeeRole = false;
     notifyListeners();
   }
 
   Future<void> lisOfRoles() async {
-    loading = true;
-
     Response response = await APIService.getlistOfRoleEnd();
     if (response.statusCode == 201) {
-      listOfRoleRes = listOfRolesModelFromJson(response.body);
+      listOfRoleRes = listofRole.listOfRolesModelFromJson(response.body);
     } else {
       print('error');
     }
-    loading = false;
+    loadingRole = false;
+    loadingEmployeeData = false;
     notifyListeners();
   }
 
   void addEmployee(BuildContext context) {
     if (employeeFormKey.currentState!.validate()) {
-      loading = true;
+      buttonLoading = true;
       notifyListeners();
       Future.delayed(const Duration(seconds: 1), () {
         EmployeeAddRequestModel model = EmployeeAddRequestModel(
@@ -84,17 +93,19 @@ class UserProvider extends ChangeNotifier {
           roleId: roleId,
         );
         APIService.addEmployeeEnd(model).then((result) {
-          loading = false;
-          dropdownValue = null;
-          emailController.clear();
-          phoneNumberController.clear();
-          fullNameController.clear();
-          notifyListeners();
           if (result) {
             // ignore: deprecated_member_use
+
             Scaffold.of(context).showSnackBar(
                 (SnackBarWidget.MainSnackBarSuccess(
-                    context, "Employee successfully added ")));
+                    context, "Employee successfully added")));
+            buttonLoading = false;
+            dropdownValue = null;
+            emailController.clear();
+            phoneNumberController.clear();
+            fullNameController.clear();
+            dropDownEmployee.currentState!.reset();
+            notifyListeners();
           } else {}
         });
       });
@@ -103,6 +114,8 @@ class UserProvider extends ChangeNotifier {
 
   void addTask(BuildContext context) {
     List<TaskRequestModel> tasks = [];
+    print('sdfsfsdf: $buttonLoading');
+
     if (taskFormKey.currentState!.validate()) {
       buttonLoading = true;
       notifyListeners();
@@ -116,7 +129,9 @@ class UserProvider extends ChangeNotifier {
         }
         TaskRequestHolderModel model = TaskRequestHolderModel(tasks: tasks);
         APIService.addTaskEnd(model).then((result) {
+          dropdownResult = null;
           buttonLoading = false;
+          dropDownTask.currentState!.reset();
           notifyListeners();
           for (TextEditingController textcontrol in taskControllers) {
             textcontrol.clear();
@@ -154,21 +169,21 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> taskList() async {
-    loading = true;
-    // notifyListeners();
+    var roleId = await LocalData.retrieveRoleId();
 
-    Response response = await APIService.getUserTaskListEnd();
+    print('roleiiiddL $roleId');
+    Response response = await APIService.getUserTaskListEnd(roleId!);
     if (response.statusCode == 201) {
       taskListResponse = taskListResponseModelFromJson(response.body);
     } else {
       print('error');
     }
-    loading = false;
+
+    loadingTaskList = false;
     notifyListeners();
   }
 
   Future<void> restaurantOrderList() async {
-    loading = true;
     Response response = await APIService.getRestaurantOrderListEnd();
     if (response.statusCode == 200) {
       restaurantOrderResponse =
@@ -176,7 +191,7 @@ class UserProvider extends ChangeNotifier {
     } else {
       print('error');
     }
-    loading = false;
+    loadingRetrauntLit = false;
     notifyListeners();
   }
 }

@@ -9,9 +9,9 @@ class Config {
   static const String verifyOTPPath = "/auth/verify_otp";
   static const String getUserPath = "/admin/get_users";
   static const String getUserWithRolePath = "/admin/get_users_with_roles";
-  static const String getTaskListPath = "/employee/get_tasks/5";
+  static const String getTaskListPath = "/employee/get_tasks/";
   static const String getlistOfRolesPath = "/admin/get_list_role";
-  static const String addEmployeePath = "/admin/add_employee";
+  static const String addEmployeePath = "/admin/add_users";
   static const String addTaskPath = "/admin/add_task";
   static const String addRolePath = "/admin/add_role";
   static const String restaurantOrderListPath = "/api/restaurant_order/";

@@ -27,7 +27,7 @@ class EmployeeList extends StatelessWidget {
           SizedBox(
             height: 500,
             child: Consumer<UserProvider>(builder: (_, userProvider, __) {
-              return userProvider.loading
+              return userProvider.loadingEmployeeData
                   ? const LoadingWidget()
                   : DataTable2(
                       empty: const NoDataWidget(),

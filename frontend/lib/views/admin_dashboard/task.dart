@@ -22,11 +22,17 @@ class _TaskState extends State<Task> {
       return (value!.isEmpty) ? 'Enter task' : null;
     },
   };
+
   @override
   void initState() {
+    userRole();
     super.initState();
+  }
+
+  Future<void> userRole() async {
     var userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.userWithRole();
+    userProvider.loadingRole = true;
+    await userProvider.lisOfRoles();
     userProvider.taskControllers.add(TextEditingController());
   }
 
@@ -44,8 +50,9 @@ class _TaskState extends State<Task> {
   Widget build(BuildContext context) {
     FrameSize.init(context: context);
     return Consumer<UserProvider>(builder: (_, userProvider, __) {
-      return Center(
-        child: userProvider.loading
+      return Scaffold(
+          body: Center(
+        child: userProvider.loadingRole
             ? const LoadingWidget()
             : Card(
                 elevation: 3,
@@ -68,26 +75,26 @@ class _TaskState extends State<Task> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const MainHeadTitle(title: 'Add Tasks'),
-                              DropdownButtonFormField<String>(
-                                value: userProvider.dropdownValue,
+                              DropdownButtonFormField<Result>(
+                                key: userProvider.dropDownTask,
                                 hint: const Text("Role"),
                                 onChanged: (var newValue) {
                                   setState(() {
-                                    userProvider.taskDropDown = newValue!;
+                                    userProvider.roleId = newValue!.id;
                                   });
                                 },
                                 validator: (var value) {
-                                  if (value?.isEmpty ?? true) {
+                                  if (value == null) {
                                     return 'Enter role';
                                   }
+                                  return null;
                                 },
                                 items: userProvider.listOfRoleRes!.result
                                     .map((Result value) {
                                   String role =
                                       MainUtils.convertToTitleCase(value.role);
-                                  userProvider.roleId = value.id;
-                                  return DropdownMenuItem<String>(
-                                    value: role,
+                                  return DropdownMenuItem<Result>(
+                                    value: value,
                                     child: Text(role),
                                   );
                                 }).toList(),
@@ -193,7 +200,7 @@ class _TaskState extends State<Task> {
                     )),
                   ),
                 )),
-      );
+      ));
     });
   }
 }

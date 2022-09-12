@@ -151,4 +151,24 @@ class LocalData {
       throw Exception("message: $e");
     }
   }
+
+  static Future<void> saveUserRoleId(int roleId) async {
+    var boxName = dotenv.env['EMS_USER_ROLE_ID'];
+    await Hive.openBox(boxName!);
+    final box = Hive.box(boxName);
+    box.put(boxName, roleId);
+  }
+
+  static Future<int?> retrieveRoleId() async {
+    var boxName = dotenv.env['EMS_USER_ROLE_ID'];
+    final box = await Hive.openBox(boxName!);
+    int? roleId = await box.get(boxName);
+    return roleId;
+  }
+
+  static Future<void> deleteRoleId() async {
+    var boxName = dotenv.env['EMS_USER_ROLE_ID'];
+    final box = await Hive.openBox(boxName!);
+    await box.delete(boxName);
+  }
 }

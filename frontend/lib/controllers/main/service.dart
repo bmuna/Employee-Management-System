@@ -99,16 +99,16 @@ class APIService {
     }
   }
 
-  static Future<http.Response> getUserTaskListEnd() async {
-    String? tokenUser = await LocalData.retrieveAdminToken();
+  static Future<http.Response> getUserTaskListEnd(int id) async {
+    String? tokenUser = await LocalData.retrieveUserToken();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer $tokenUser'
     };
-
-    Uri url =
-        Uri.http(Config.hostURL, Config.basePathURL + Config.getTaskListPath);
+    Uri url = Uri.http(
+        Config.hostURL, '${Config.basePathURL}${Config.getTaskListPath}$id');
     var response = await client.get(url, headers: requestHeaders);
+    print('retrive: ${response.body}');
     return response;
   }
 

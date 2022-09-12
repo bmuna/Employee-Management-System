@@ -40,6 +40,7 @@ class APIService {
   static Future<http.Response> verifyOTPEnd(
       UserVerifyOTPRequestModel model) async {
     Map<String, String> requestHeaders = {'Content-Type': 'application/json'};
+    print('model: ${model.toJson()}');
     Uri url =
         Uri.http(Config.hostURL, Config.basePathURL + Config.verifyOTPPath);
     var response = await client.post(url,

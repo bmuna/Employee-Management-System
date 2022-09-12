@@ -38,7 +38,7 @@ class _MainScreenAdminState extends State<MainScreenAdmin>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
+      key: context.read<MenuControllerAdmin>().scaffoldKey,
       drawer: const SideMenuAdmin(),
       body: SafeArea(
         child: Row(

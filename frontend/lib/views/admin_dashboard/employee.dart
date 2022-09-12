@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:employee_managment/common/size.dart';
 import 'package:employee_managment/component/main_button.dart';
 import 'package:provider/provider.dart';
-import '../../component/main_text_field_icon.dart';
 import '../../models/users/list_of_role_mode.dart';
 
 class Employee extends StatefulWidget {
@@ -18,10 +17,22 @@ class Employee extends StatefulWidget {
 }
 
 class _EmployeeState extends State<Employee> {
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<UserProvider>(context, listen: false).lisOfRoles();
+  // }
+
   @override
   void initState() {
     super.initState();
-    Provider.of<UserProvider>(context, listen: false).lisOfRoles();
+    lisOfRole();
+  }
+
+  Future<void> lisOfRole() async {
+    var userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.loadingEmployeeData = true;
+    await userProvider.lisOfRoles();
   }
 
   @override
@@ -39,7 +50,7 @@ class _EmployeeState extends State<Employee> {
     return Consumer<UserProvider>(builder: (_, userProvider, __) {
       return Scaffold(
           body: Center(
-        child: userProvider.loading
+        child: userProvider.loadingEmployeeData
             ? const LoadingWidget()
             : Card(
                 elevation: 3,
@@ -107,19 +118,20 @@ class _EmployeeState extends State<Employee> {
                                         const SizedBox(
                                           height: 30,
                                         ),
-                                        DropdownButtonFormField<String>(
-                                          value: userProvider.dropdownValue,
+                                        DropdownButtonFormField<Result>(
+                                          key: userProvider.dropDownEmployee,
                                           hint: const Text("Role"),
                                           onChanged: (var newValue) {
                                             setState(() {
-                                              userProvider.dropdownValue =
-                                                  newValue!;
+                                              userProvider.roleId =
+                                                  newValue!.id;
                                             });
                                           },
                                           validator: (var value) {
-                                            if (value?.isEmpty ?? true) {
+                                            if (value == null) {
                                               return 'Enter role';
                                             }
+                                            return null;
                                           },
                                           items: userProvider
                                               .listOfRoleRes!.result
@@ -127,9 +139,8 @@ class _EmployeeState extends State<Employee> {
                                             String role =
                                                 MainUtils.convertToTitleCase(
                                                     value.role);
-                                            userProvider.roleId = value.id;
-                                            return DropdownMenuItem<String>(
-                                              value: role,
+                                            return DropdownMenuItem<Result>(
+                                              value: value,
                                               child: Text(role),
                                             );
                                           }).toList(),
@@ -142,7 +153,8 @@ class _EmployeeState extends State<Employee> {
                                           text: 'submit',
                                           onPressed: (() => userProvider
                                               .addEmployee(context)),
-                                          isLoading: userProvider.loading),
+                                          isLoading:
+                                              userProvider.buttonLoading),
                                       const SizedBox(
                                         height: 64,
                                       )

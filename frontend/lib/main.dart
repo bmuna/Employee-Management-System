@@ -37,7 +37,10 @@ class _MyAppState extends State<MyApp> {
         providers: [
           ChangeNotifierProvider<AuthProvider>(create: (_) => AuthProvider()),
           ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
-          ChangeNotifierProvider<MenuController>(create: (_) => MenuController()),
+          ChangeNotifierProvider<MenuControllerAdmin>(
+              create: (_) => MenuControllerAdmin()),
+          ChangeNotifierProvider<MenuControllerUser>(
+              create: (_) => MenuControllerUser()),
         ],
         builder: (context, builder) {
           return MaterialApp(
@@ -48,7 +51,7 @@ class _MyAppState extends State<MyApp> {
                 textTheme: const TextTheme(
                     titleMedium: TextStyle(color: kPrimaryBlackColor))),
             debugShowCheckedModeBanner: false,
-            initialRoute: RoutesName.splash,
+            initialRoute: RoutesName.otp,
             onGenerateRoute: Flurorouter.router.generator,
           );
         });

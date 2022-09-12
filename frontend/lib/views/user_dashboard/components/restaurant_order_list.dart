@@ -19,12 +19,6 @@ class RestaurantOrderList extends StatefulWidget {
 
 class _RestaurantOrderListState extends State<RestaurantOrderList> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<UserProvider>(context, listen: false).restaurantOrderList();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Card(
       elevation: 3,
@@ -45,7 +39,7 @@ class _RestaurantOrderListState extends State<RestaurantOrderList> {
               ),
             ),
             Consumer<UserProvider>(builder: (_, userProvider, __) {
-              return userProvider.loading
+              return userProvider.loadingRetrauntLit
                   ? const LoadingWidget()
                   : ListView.builder(
                       shrinkWrap: true,
@@ -188,7 +182,12 @@ class OrdersCard extends StatelessWidget {
                         ),
                       ]),
                   SizedBox(
-                    width: 300,
+                    width: FrameSize.screenWidth *
+                        (FrameSize.screenWidth > 770
+                            ? 0.2
+                            : FrameSize.screenHeight > 670
+                                ? 0.2
+                                : 0.3),
                     child: Card(
                       child: Padding(
                         padding: const EdgeInsets.all(10.0),
@@ -207,58 +206,64 @@ class OrdersCard extends StatelessWidget {
                               title: "Cart Id:",
                               value: orderVal.cartId,
                             ),
-                            SizedBox(height: 5),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  "Promo code:",
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w300,
-                                    fontFamily: 'Poppins',
-                                  ),
-                                ),
-                                Container(
-                                  width: 100,
-                                  height: 25,
-                                  decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: kSubBlackColor, width: 0.3),
-                                      borderRadius: const BorderRadius.all(
-                                        Radius.circular(5),
-                                      )),
-                                  child: Center(
-                                    child: Text(
-                                      orderVal.orderPromoCode,
-                                      style: const TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: 'Poppins',
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            const SizedBox(height: 5),
+                            PaymentRowWidget(
+                              title: "Promo code:",
+                              value: orderVal.orderPromoCode,
                             ),
-                            SizedBox(height: 5),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            //   children: [
+                            //     const Expanded(
+                            //       child: Text(
+                            //         "Promo code:",
+                            //         style: TextStyle(
+                            //           fontSize: 13,
+                            //           fontWeight: FontWeight.w300,
+                            //           fontFamily: 'Poppins',
+                            //         ),
+                            //       ),
+                            //     ),
+                            //     Expanded(
+                            //       child: Container(
+                            //         decoration: BoxDecoration(
+                            //             color: Colors.white,
+                            //             border: Border.all(
+                            //                 color: kSubBlackColor, width: 0.3),
+                            //             borderRadius: const BorderRadius.all(
+                            //               Radius.circular(5),
+                            //             )),
+                            //         child: Center(
+                            //           child: Text(
+                            //             orderVal.orderPromoCode,
+                            //             style: const TextStyle(
+                            //               fontSize: 15,
+                            //               fontWeight: FontWeight.w400,
+                            //               fontFamily: 'Poppins',
+                            //             ),
+                            //           ),
+                            //         ),
+                            //       ),
+                            //     ),
+                            //   ],
+                            // ),
+                            const SizedBox(height: 5),
                             PaymentRowWidget(
                               title: "Sub-total",
                               value: '${orderVal.subTotal}\$',
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             PaymentRowWidget(
                               title: "Tax fee",
                               value: "${orderVal.taxFee}\$",
                             ),
-                            SizedBox(height: 5),
+                            const SizedBox(height: 5),
                             PaymentRowWidget(
                               title: "Delivery fee",
                               value: "${orderVal.deliveryFee}\$",
                             ),
-                            SizedBox(height: 5),
-                            Divider(),
+                            const SizedBox(height: 5),
+                            const Divider(),
                             PaymentRowWidget(
                               title: "Total fee",
                               value: "${orderVal.totalCost}\$",
@@ -291,22 +296,26 @@ class PaymentRowWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          title,
-          // "Cart Id:",
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w300,
-            fontFamily: 'Poppins',
+        Expanded(
+          child: Text(
+            title,
+            // "Cart Id:",
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w300,
+              fontFamily: 'Poppins',
+            ),
           ),
         ),
-        Text(
-          value,
-          // orderVal.cartId,
-          style: const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w400,
-            fontFamily: 'Poppins',
+        Expanded(
+          child: Text(
+            value,
+            // orderVal.cartId,
+            style: const TextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w400,
+              fontFamily: 'Poppins',
+            ),
           ),
         ),
       ],

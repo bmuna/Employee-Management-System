@@ -35,7 +35,7 @@ class _MainScreenUserState extends State<MainScreenUser>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: context.read<MenuController>().scaffoldKey,
+      key: context.read<MenuControllerUser>().scaffoldKey,
       drawer: const SideMenuUser(),
       body: SafeArea(
         child: Row(

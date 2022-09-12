@@ -17,11 +17,11 @@ class EmployeeRole extends StatefulWidget {
 }
 
 class _EmployeeRoleState extends State<EmployeeRole> {
-  @override
-  void initState() {
-    super.initState();
-    Provider.of<UserProvider>(context, listen: false).userWithRole();
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   Provider.of<UserProvider>(context, listen: false).userWithRole();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,7 @@ class _EmployeeRoleState extends State<EmployeeRole> {
               ),
             ),
             Consumer<UserProvider>(builder: (_, userProvider, __) {
-              return userProvider.loading
+              return userProvider.loadingEmployeeRole
                   ? const LoadingWidget()
                   : ListView.builder(
                       shrinkWrap: true,

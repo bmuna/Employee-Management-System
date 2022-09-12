@@ -17,14 +17,6 @@ class TaskList extends StatefulWidget {
 
 class _TaskListState extends State<TaskList> {
   @override
-  void initState() {
-    super.initState();
-    Provider.of<UserProvider>(context, listen: false).taskList();
-
-    // Provider.of<UserProvider>(context, listen: false).userData();
-  }
-
-  @override
   Widget build(BuildContext context) {
     FrameSize.init(context: context);
 
@@ -47,54 +39,51 @@ class _TaskListState extends State<TaskList> {
               ),
             ),
             Consumer<UserProvider>(builder: (_, userProvider, __) {
-              return userProvider.loading
+              return userProvider.loadingTaskList
                   ? const LoadingWidget()
-                  : ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: userProvider.taskListResponse!.results.length,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        String task =
-                            userProvider.taskListResponse!.results[index].task;
-                        // return Text(task,
-                        //     style: const TextStyle(
-                        //       fontSize: 16,
-                        //       color: kSubBlackColor,
-                        //       fontFamily: 'Poppins',
-                        //     ));
+                  : userProvider.taskListResponse!.results.isEmpty
+                      ? const NoDataWidget()
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          itemCount:
+                              userProvider.taskListResponse!.results.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) {
+                            String task = userProvider
+                                .taskListResponse!.results[index].task;
 
-                        return Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: kSecondaryColor,
-                                radius: 10,
-                                child: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  icon: const Icon(
-                                    Icons.check,
-                                    size: 15,
-                                    color: kPrimaryLightColor,
+                            return Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                children: [
+                                  const CircleAvatar(
+                                    backgroundColor: kSecondaryColor,
+                                    radius: 10,
+                                    child: IconButton(
+                                      padding: EdgeInsets.zero,
+                                      icon: Icon(
+                                        Icons.check,
+                                        size: 15,
+                                        color: kPrimaryLightColor,
+                                      ),
+                                      onPressed: null,
+                                    ),
                                   ),
-                                  onPressed: () {},
-                                ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  Expanded(
+                                    child: Text(task,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: kSubBlackColor,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w400)),
+                                  )
+                                ],
                               ),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Text(task,
-                                    style: const TextStyle(
-                                        fontSize: 14,
-                                        color: kSubBlackColor,
-                                        fontFamily: 'Poppins',
-                                        fontWeight: FontWeight.w400)),
-                              )
-                            ],
-                          ),
-                        );
-                      });
+                            );
+                          });
             })
           ],
         ),
