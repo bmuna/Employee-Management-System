@@ -1,6 +1,6 @@
 # Employee-Management-System
 
-This application demonstrates an employee management system for a food delivery company. It handles functionalities like creating employees and admin with authentication and authorization, admin assigning tasks based on the employee roles, and employees can view a list of restaurant orders coming to the application and list tasks that they are assigned to.
+This application demonstrates an employee management system for a food delivery company. It handles functionalities like creating employees and admin with authentication and authorization, admin assigning tasks based on the employee roles, and employees can view a list of restaurant orders coming to the application and list tasks they are assigned to.
 
 # Technologies Used:
 	
@@ -20,8 +20,7 @@ This application demonstrates an employee management system for a food delivery 
 
 # Configure .env file for your project(server) 
 
-```
-ACCESS_TOKEN_SECRET = ****
+```ACCESS_TOKEN_SECRET = ****
 REFRESH_TOKEN_SECRET = ****
 
 TWILIO_ACCOUNT_SID = ****
@@ -35,8 +34,7 @@ TWILIO_SERVICE_SID = ****
 # Configure .env file for your project(frontend) 
 
 
-```
-EMS_ADMIN_BOX = ****
+```EMS_ADMIN_BOX = ****
 ENCRIPTION_ADMINKEY_STORAGE = ****
 
 EMS_USER_BOX = ****
