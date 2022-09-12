@@ -74,16 +74,16 @@ Open [http://localhost:<yourEnvPort>](http://localhost:<yourEnvPort>) to view it
 
 ## Screenshot
 
+![welcome](https://user-images.githubusercontent.com/38354323/189662153-fb46c976-5985-473c-8d5a-69655eef828e.JPG)	
+![login-admin-error-handling](https://user-images.githubusercontent.com/38354323/189662132-e175dc38-7fa0-4a9b-89e4-104450efa2ec.JPG)
+![admin-loadin](https://user-images.githubusercontent.com/38354323/189662194-aa3b0735-dff0-40dc-a029-a37d6aea0356.JPG)	
+![employee-login](https://user-images.githubusercontent.com/38354323/189662125-28f27e43-cf60-4988-ba07-6f818dc63ce2.JPG)
+![otp](https://user-images.githubusercontent.com/38354323/189662138-06d7f820-8f78-4dd3-81d6-e03ec161e4d7.JPG)	
+![admin-dashboard](https://user-images.githubusercontent.com/38354323/189662162-02ee3ab2-8d72-4eae-8215-1cf69e703727.JPG)
+![employee-dashboard](https://user-images.githubusercontent.com/38354323/189662111-57825404-1ad3-438b-864b-32c24d2b1f2b.JPG)	
+![admin-employee](https://user-images.githubusercontent.com/38354323/189662176-b911b62d-6968-4b4b-a62b-aca2044f50e3.JPG)	
 ![admin-role](https://user-images.githubusercontent.com/38354323/189662090-6c6468ec-3b03-4ea5-bedd-d5756824e194.JPG)
 ![admin-task](https://user-images.githubusercontent.com/38354323/189662104-ca306360-dec7-47be-9056-040c543419ad.JPG)
-![employee-dashboard](https://user-images.githubusercontent.com/38354323/189662111-57825404-1ad3-438b-864b-32c24d2b1f2b.JPG)
-![employee-login](https://user-images.githubusercontent.com/38354323/189662125-28f27e43-cf60-4988-ba07-6f818dc63ce2.JPG)
-![login-admin-error-handling](https://user-images.githubusercontent.com/38354323/189662132-e175dc38-7fa0-4a9b-89e4-104450efa2ec.JPG)
-![otp](https://user-images.githubusercontent.com/38354323/189662138-06d7f820-8f78-4dd3-81d6-e03ec161e4d7.JPG)
-![welcome](https://user-images.githubusercontent.com/38354323/189662153-fb46c976-5985-473c-8d5a-69655eef828e.JPG)
-![admin-dashboard](https://user-images.githubusercontent.com/38354323/189662162-02ee3ab2-8d72-4eae-8215-1cf69e703727.JPG)
-![admin-employee](https://user-images.githubusercontent.com/38354323/189662176-b911b62d-6968-4b4b-a62b-aca2044f50e3.JPG)
-![admin-loadin](https://user-images.githubusercontent.com/38354323/189662194-aa3b0735-dff0-40dc-a029-a37d6aea0356.JPG)
 ![admin-logout](https://user-images.githubusercontent.com/38354323/189662202-059a4b08-49c6-4584-ba2e-e83673ddac91.JPG)
 
 
