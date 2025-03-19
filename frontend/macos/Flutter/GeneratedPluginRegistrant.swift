@@ -6,8 +6,8 @@ import FlutterMacOS
 import Foundation
 
 import flutter_secure_storage_macos
-import path_provider_macos
-import sqflite
+import path_provider_foundation
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FlutterSecureStorageMacosPlugin.register(with: registry.registrar(forPlugin: "FlutterSecureStorageMacosPlugin"))
