@@ -1,5 +1,4 @@
 import 'package:employee_managment/common/user_type_enum.dart';
-import 'package:employee_managment/component/main_snack_bar_sucess.dart';
 import 'package:employee_managment/controllers/auth/local/local_persist_data.dart';
 import 'package:employee_managment/controllers/auth/service.dart';
 import 'package:employee_managment/models/auth/response_model/admin_login_response_model.dart';
@@ -26,18 +25,20 @@ class AuthProvider extends ChangeNotifier {
 
   void adminLogin(BuildContext context) {
     if (authAdminFormKey.currentState!.validate()) {
+      loading = true;
+      notifyListeners();
+
       Future.delayed(const Duration(seconds: 1), () {
-        loading = true;
-        notifyListeners();
         AdminLoginRequestModel model = AdminLoginRequestModel(
           email: emailController.text,
           password: passwordController.text,
         );
+
         APIService.loginAdminEnd(model).then((result) async {
           if (result.statusCode == 201) {
             print('result: ${result.body}');
-            AdminLoginResponseModel loginResponse =
-                adminLoginResponseModelFromJson(result.body);
+            AdminLoginResponseModel loginResponse = adminLoginResponseModelFromJson(result.body);
+
             await LocalData.saveUserType(UserType.admin.name);
             LocalData.saveAdminToken(loginResponse.token).whenComplete(() {
               emailController.clear();
@@ -49,10 +50,22 @@ class AuthProvider extends ChangeNotifier {
           } else {
             loading = false;
             notifyListeners();
-            // ignore: deprecated_member_use
-            Scaffold.of(context).showSnackBar((SnackBarWidget.MainSnackBarError(
-                context, "Check your emaill/password again")));
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text("Check your email/password again"),
+                backgroundColor: Colors.red,
+              ),
+            );
           }
+        }).catchError((error) {
+          loading = false;
+          notifyListeners();
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("An error occurred. Please try again."),
+              backgroundColor: Colors.red,
+            ),
+          );
         });
       });
     }
@@ -62,43 +75,75 @@ class AuthProvider extends ChangeNotifier {
     if (authUserFormKey.currentState!.validate()) {
       loading = true;
       notifyListeners();
+
       UserLoginRequestModel model = UserLoginRequestModel(
         phoneNumber: phoneController.text,
       );
+
       APIService.checkUserExistEnd(model).then((result) {
         if (result.statusCode == 201) {
           APIService.sendOTPEnd(model).then((result) async {
             if (result.statusCode == 201) {
-              print('response: ${result.body}');
               loading = false;
               notifyListeners();
-              Scaffold.of(context)
-                  // ignore: deprecated_member_use
-                  .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
-                      context, "Code has been sent your phone number")))
+
+              // Guard against context being unmounted
+              if (!context.mounted) return;
+
+              ScaffoldMessenger.of(context)
+                  .showSnackBar(
+                    const SnackBar(
+                      content: Text("Code has been sent to your phone number"),
+                      backgroundColor: Colors.green,
+                    ),
+                  )
                   .closed
-                  .whenComplete(
-                      () => {Navigator.pushNamed(context, RoutesName.otp)});
+                  .whenComplete(() {
+                if (context.mounted) {
+                  Navigator.pushNamed(context, RoutesName.otp);
+                }
+              });
             } else {
               loading = false;
               notifyListeners();
-              // ignore: deprecated_member_use
-              Scaffold.of(context).showSnackBar(
-                  (SnackBarWidget.MainSnackBarError(context, "Try again")));
+
+              // Guard against context being unmounted
+              if (!context.mounted) return;
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text("Try again"),
+                  backgroundColor: Colors.red,
+                ),
+              );
             }
           });
         } else if (result.statusCode == 404) {
           loading = false;
           notifyListeners();
-          // ignore: deprecated_member_use
-          Scaffold.of(context).showSnackBar((SnackBarWidget.MainSnackBarError(
-              context, "User doesn't exist")));
+
+          // Guard against context being unmounted
+          if (!context.mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("User doesn't exist"),
+              backgroundColor: Colors.red,
+            ),
+          );
         } else {
           loading = false;
           notifyListeners();
-          // ignore: deprecated_member_use
-          Scaffold.of(context).showSnackBar(
-              (SnackBarWidget.MainSnackBarError(context, "try again later")));
+
+          // Guard against context being unmounted
+          if (!context.mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Try again later"),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       });
     }
@@ -110,37 +155,61 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
 
       UserVerifyOTPRequestModel model = UserVerifyOTPRequestModel(
-          phoneNumber: phoneController.text, otpCode: otpController.text);
+        phoneNumber: phoneController.text,
+        otpCode: otpController.text,
+      );
+
       APIService.verifyOTPEnd(model).then((result) async {
-        print('hehehr: ${result.body}');
         loading = false;
         notifyListeners();
+
         if (result.statusCode == 201) {
           loginResponse = userLoginResponseModelFromJson(result.body);
           await LocalData.saveUserType(UserType.user.name);
-          LocalData.saveUserToken(loginResponse!.token).whenComplete(() {
-            LocalData.saveUserRoleId(loginResponse!.users[0].roleId)
+          await LocalData.saveUserToken(loginResponse!.token);
+
+          LocalData.saveUserRoleId(loginResponse!.users[0].roleId).whenComplete(() {
+            print('code2: ${loginResponse!.users[0].roleId}');
+            phoneController.clear();
+            otpController.clear();
+
+            // Guard against context being unmounted
+            if (!context.mounted) return;
+
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  const SnackBar(
+                    content: Text("Successfully logged in"),
+                    backgroundColor: Colors.green,
+                  ),
+                )
+                .closed
                 .whenComplete(() {
-              print('code2: ${loginResponse!.users[0].roleId}');
-              phoneController.clear();
-              otpController.clear();
-              Scaffold.of(context)
-                  // ignore: deprecated_member_use
-                  .showSnackBar((SnackBarWidget.MainSnackBarSuccess(
-                      context, "Successfuly logged in")))
-                  .closed
-                  .whenComplete(() =>
-                      {Navigator.pushNamed(context, RoutesName.dashboarduser)});
+              if (context.mounted) {
+                Navigator.pushNamed(context, RoutesName.dashboarduser);
+              }
             });
           });
         } else if (result.statusCode == 400) {
-          // ignore: deprecated_member_use
-          Scaffold.of(context).showSnackBar(
-              (SnackBarWidget.MainSnackBarError(context, "Invalide code")));
+          // Guard against context being unmounted
+          if (!context.mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Invalid code"),
+              backgroundColor: Colors.red,
+            ),
+          );
         } else {
-          // ignore: deprecated_member_use
-          Scaffold.of(context).showSnackBar(
-              (SnackBarWidget.MainSnackBarError(context, "Try again later")));
+          // Guard against context being unmounted
+          if (!context.mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Try again later"),
+              backgroundColor: Colors.red,
+            ),
+          );
         }
       });
     }
