@@ -18,6 +18,7 @@ This application demonstrates an employee management system for a food delivery 
 	- JWT for tokenization and flutter_secure_storage to encrypt key value
 
 
+<!--
 ## Configure .env file for your project(server) 
 
 ```ACCESS_TOKEN_SECRET = ****
