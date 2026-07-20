@@ -72,6 +72,8 @@ Open [http://localhost:<yourEnvPort>](http://localhost:<yourEnvPort>) to view it
 
   ### `flutter run`
 
+
+<!--
 ## Screenshot
 
 ![welcome](https://user-images.githubusercontent.com/38354323/189662153-fb46c976-5985-473c-8d5a-69655eef828e.JPG)	
@@ -85,6 +87,7 @@ Open [http://localhost:<yourEnvPort>](http://localhost:<yourEnvPort>) to view it
 ![admin-role](https://user-images.githubusercontent.com/38354323/189662090-6c6468ec-3b03-4ea5-bedd-d5756824e194.JPG)
 ![admin-task](https://user-images.githubusercontent.com/38354323/189662104-ca306360-dec7-47be-9056-040c543419ad.JPG)
 ![admin-logout](https://user-images.githubusercontent.com/38354323/189662202-059a4b08-49c6-4584-ba2e-e83673ddac91.JPG)
+-->
 
 
 
