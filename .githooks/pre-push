@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Blocks git push if malware / implant heuristics (and ClamAV if present) fail.
+set -euo pipefail
+
+ROOT="$(git rev-parse --show-toplevel)"
+SCAN="$ROOT/scripts/scan-malware.sh"
+
+chmod +x "$SCAN" 2>/dev/null || true
+
+echo "pre-push: running malware scan..."
+# Local pushes: heuristics always; ClamAV only if installed (auto)
+RUN_CLAM="${RUN_CLAM:-auto}" "$SCAN" HEAD

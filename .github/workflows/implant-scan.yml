@@ -1,0 +1,25 @@
+name: Malware scan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ClamAV
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clamav clamav-daemon
+          sudo systemctl stop clamav-freshclam || true
+          sudo freshclam || sudo freshclam
+          clamscan --version
+
+      - name: Run malware + implant scan (heuristics + ClamAV)
+        run: |
+          chmod +x scripts/scan-malware.sh scripts/scan-implant.sh
+          RUN_CLAM=1 ./scripts/scan-malware.sh HEAD
